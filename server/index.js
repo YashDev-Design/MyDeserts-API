@@ -2,14 +2,16 @@ require("dotenv").config(); // Load environment variables
 
 const express = require("express");
 const mongoose = require("mongoose");
-const Desert = require("./models/deserts");
+const Desert = require("./models/deserts.model");
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
+
 app.use(express.json());
 
 // Get values from .env
-const PORT = process.env.PORT;
-const MONGO_URI = process.env.MONGO_URI;
+const { PORT, MONGO_URI } = process.env;
 
 // MongoDB Connection
 mongoose
@@ -43,6 +45,32 @@ app.post("/api/deserts", async (req, res) => {
       .json({ message: "Desert added successfully", data: newDesert });
   } catch (error) {
     res.status(400).json({ message: "Error adding desert" });
+  }
+});
+
+// PUT Route to update a desert by ID
+app.put("/api/deserts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, type, calories } = req.body;
+
+    // Find and update
+    const updatedDesert = await Desert.findByIdAndUpdate(
+      id,
+      { name, type, calories },
+      { new: true } // return the updated document
+    );
+
+    if (!updatedDesert) {
+      return res.status(404).json({ message: "Desert not found" });
+    }
+
+    res.json({
+      message: "Desert updated successfully",
+      data: updatedDesert,
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating desert", error });
   }
 });
 
