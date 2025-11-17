@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import api from "./api";
 
 function App() {
-  const [deserts, setDeserts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ name: "", type: "", calories: "" });
   const [editId, setEditId] = useState(null);
 
   const fetchData = async () => {
-    const res = await api.get("/deserts");
-    setDeserts(res.data);
+    const res = await api.get("/products");
+    setProducts(res.data);
   };
 
   useEffect(() => {
@@ -18,69 +18,241 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      await api.put(`/deserts/${editId}`, form);
+      await api.put(`/products/${editId}`, form);
       setEditId(null);
     } else {
-      await api.post("/deserts", form);
+      await api.post("/products", form);
     }
     setForm({ name: "", type: "", calories: "" });
     fetchData();
   };
 
   const handleDelete = async (id) => {
-    await api.delete(`/deserts/${id}`);
+    await api.delete(`/products/${id}`);
     fetchData();
   };
 
-  const handleEdit = (d) => {
-    setForm(d);
-    setEditId(d._id);
+  const handleEdit = (p) => {
+    setForm(p);
+    setEditId(p._id);
+  };
+
+  const menuButtonStyle = {
+    padding: "10px 18px",
+    borderRadius: "20px",
+    border: "none",
+    background: "#f3f3f3",
+    cursor: "pointer",
+    fontWeight: "600",
+    fontSize: "14px",
+    transition: "0.2s",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: 20 }}>
-      <h2>🍰 MyDeserts App</h2>
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        background: "#faf7f2",
+        fontFamily: "'Sora', sans-serif",
+        overflowX: "hidden",
+      }}
+    >
+      {/* NAVBAR */}
+      <header
+        style={{
+          width: "100%",
+          padding: "15px 30px",
+          background: "white",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div style={{
+          width: "100%",
+          padding: "0 40px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}>
+        <h2 style={{ margin: 0 }}>🍰 BakeBuddy Admin</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Dessert Name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <br />
-        <br />
-        <input
-          placeholder="Type"
-          value={form.type}
-          onChange={(e) => setForm({ ...form, type: e.target.value })}
-        />
-        <br />
-        <br />
-        <input
-          placeholder="Calories"
-          value={form.calories}
-          onChange={(e) => setForm({ ...form, calories: e.target.value })}
-        />
-        <br />
-        <br />
-
-        <button type="submit">
-          {editId ? "✅ Update Dessert" : "➕ Add Dessert"}
-        </button>
-      </form>
-
-      <hr />
-
-      <h3>📋 Dessert List</h3>
-      {deserts.map((d) => (
-        <div key={d._id}>
-          {d.name} | {d.type} | {d.calories} cal
-          <button onClick={() => handleEdit(d)}>✏ Edit</button>
-          <button onClick={() => handleDelete(d._id)}>🗑 Delete</button>
+        <div style={{
+          display: "flex",
+          gap: "12px",
+          flexWrap: "nowrap",
+          maxWidth: "100%",
+          justifyContent: "flex-end",
+          overflow: "visible",
+        }}>
+          <button style={menuButtonStyle}>Products</button>
+          <button
+            style={menuButtonStyle}
+            onClick={() => alert("🚧 Orders Coming Soon")}
+          >
+            Orders
+          </button>
+          <button
+            style={menuButtonStyle}
+            onClick={() => alert("🚧 Users Coming Soon")}
+          >
+            Users
+          </button>
+          <button
+            style={menuButtonStyle}
+            onClick={() => alert("🚧 Analytics Coming Soon")}
+          >
+            Analytics
+          </button>
         </div>
-      ))}
+        </div>
+      </header>
+
+      {/* MAIN CONTENT */}
+      <main
+        style={{
+          maxWidth: "900px",
+          margin: "auto",
+          padding: "40px 20px",
+        }}
+      >
+        {/* ADD/EDIT PRODUCT */}
+        <section
+          style={{
+            background: "white",
+            borderRadius: "14px",
+            padding: "25px",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+            border: "1px solid #f8d9e6",
+          }}
+        >
+          <h3 style={{ marginTop: 0 }}>
+            {editId ? "✏ Update Product" : "➕ Add New Product"}
+          </h3>
+
+          <form onSubmit={handleSubmit}>
+            <input
+              placeholder="Product Name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              style={inputStyle}
+            />
+
+            <input
+              placeholder="Type"
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value })}
+              style={inputStyle}
+            />
+
+            <input
+              placeholder="Calories"
+              value={form.calories}
+              onChange={(e) => setForm({ ...form, calories: e.target.value })}
+              style={inputStyle}
+            />
+
+            <button style={submitButtonStyle}>
+              {editId ? "Save Changes" : "Add Product"}
+            </button>
+          </form>
+        </section>
+
+        {/* PRODUCT LIST */}
+        <h3 style={{ marginTop: "40px" }}>📋 Menu Items</h3>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "16px",
+        }}>
+        {products.map((p) => (
+          <div key={p._id} style={productCardStyle}>
+            <div>
+              <strong style={{ fontSize: "18px" }}>{p.name}</strong>
+              <br />
+              <small style={{ color: "#666" }}>
+                {p.type} • {p.calories} cal
+              </small>
+            </div>
+
+            <div>
+              <button
+                onClick={() => handleEdit(p)}
+                style={editButtonStyle}
+              >
+                ✏ Edit
+              </button>
+
+              <button
+                onClick={() => handleDelete(p._id)}
+                style={deleteButtonStyle}
+              >
+                🗑 Delete
+              </button>
+            </div>
+          </div>
+        ))}
+        </div>
+      </main>
     </div>
   );
 }
+
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "12px",
+  borderRadius: "8px",
+  border: "1px solid #ddd",
+};
+
+const submitButtonStyle = {
+  width: "100%",
+  padding: "14px",
+  borderRadius: "8px",
+  background: "linear-gradient(90deg,#ff9a9e,#fad0c4)",
+  border: "none",
+  color: "white",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: "16px",
+};
+
+const productCardStyle = {
+  background: "white",
+  padding: "18px",
+  borderRadius: "14px",
+  border: "1px solid #ececec",
+  boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  minHeight: "120px",
+};
+
+const editButtonStyle = {
+  padding: "8px 14px",
+  borderRadius: "6px",
+  background: "#FFCB3C",
+  border: "none",
+  cursor: "pointer",
+  marginRight: "10px",
+  fontWeight: "600",
+};
+
+const deleteButtonStyle = {
+  padding: "8px 14px",
+  borderRadius: "6px",
+  background: "#FF5D5D",
+  border: "none",
+  color: "white",
+  cursor: "pointer",
+  fontWeight: "600",
+};
 
 export default App;
