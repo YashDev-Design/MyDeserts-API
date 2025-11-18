@@ -1,3 +1,11 @@
+<p align="left">
+  <img src="https://img.shields.io/badge/React-18.2.0-blue?logo=react" />
+  <img src="https://img.shields.io/badge/Node.js-18.0.0-green?logo=node.js" />
+  <img src="https://img.shields.io/badge/Express.js-4.18.2-black?logo=express" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-brightgreen?logo=mongodb" />
+  <img src="https://img.shields.io/badge/JWT-Secured-orange?logo=jsonwebtokens" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+</p>
 # 🍰 BakeBuddy — Full Stack Bakery Management App
 
 _A portfolio-grade MERN stack project_
@@ -13,47 +21,100 @@ Designed with real-world scalability, clean architecture & professional UI styli
 ```
 Node - JS Project/
 │
-├── client/                        # React Frontend (Admin UI)
+├── client/                          # React Frontend (Admin UI + Auth)
+│   ├── public/                      # Static assets & UI previews
+│   │   ├── Admin Login Page.png
+│   │   ├── Admin Login Successful Page.png
+│   │   ├── User Login Page.png
+│   │   ├── User Registration Page.png
+│   │   └── bakebuddy-admin-ui.png
 │   ├── src/
-│   │   ├── App.js                 # Admin Dashboard UI
-│   │   ├── api.js                 # Axios API config
-│   │   └── index.js
+│   │   ├── pages/                   # Page-based routing
+│   │   │   ├── AdminLogin.jsx
+│   │   │   ├── Login.jsx
+│   │   │   └── Register.jsx
+│   │   ├── assets/
+│   │   │   ├── css/
+│   │   │   │   └── auth.css
+│   │   │   ├── icons/
+│   │   │   └── images/
+│   │   │       └── main_bg.jpg
+│   │   ├── api.js                   # Axios API config
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   ├── index.js
+│   │   └── index.css
 │   └── package.json
 │
-└── server/                        # Express Backend (MVC)
+└── server/                          # Node + Express Backend (MVC + Auth + Orders)
     ├── src/
-    │   ├── server.js              # Main server entry
-    │   ├── db.js                  # MongoDB connection
-    │   ├── models/
-    │   │   └── product.model.js   # Mongoose Schema
-    │   ├── routes/
-    │   │   └── product.routes.js  # API Routes
-    │   └── controllers/
-    │       └── product.controller.js
-    ├── migrateDesertsToProducts.js
+    │   ├── server.js                # Server Entry
+    │   ├── app.js                   # Express App Setup
+    │   ├── config/
+    │   │   └── db.js                # MongoDB Connection
+    │   ├── middleware/              # Auth & Role Guard
+    │   │   ├── auth.middleware.js
+    │   │   └── role.middleware.js
+    │   ├── controllers/             # Business Logic Layer
+    │   │   ├── auth.controller.js
+    │   │   ├── product.controller.js
+    │   │   ├── cart.controller.js
+    │   │   └── order.controller.js
+    │   ├── models/                  # Mongoose Schemas
+    │   │   ├── user.model.js
+    │   │   ├── product.model.js
+    │   │   ├── cart.model.js
+    │   │   └── order.model.js
+    │   ├── routes/                  # API Routes
+    │   │   ├── auth.routes.js
+    │   │   ├── product.routes.js
+    │   │   ├── cart.routes.js
+    │   │   └── order.routes.js
+    │   ├── utils/                   # Token + Helpers
+    │   │   └── token.util.js
+    │   └── scripts/                 # Admin CLI Tools
+    │       ├── createAdmin.js
+    │       ├── deleteAdmin.js
+    │       └── listUsers.js
     ├── package.json
     └── .env
 ```
 
 ---
 
-## ✨ Current Features (Phase 1 Complete)
+## ✨ Phase 1 — Core Functionality (Completed)
 
 ✔ Full CRUD (Create, Read, Update, Delete)  
-✔ Modern React Admin Interface  
-✔ Express REST API  
-✔ MongoDB + Mongoose model  
-✔ Fully converted MVC structure  
-✔ CORS-enabled  
-✔ `.env` support  
+✔ Modern React Admin Dashboard  
+✔ Express REST API (MVC Structure)  
+✔ MongoDB + Mongoose Models  
+✔ CORS support  
+✔ Environment variables with `.env`  
 ✔ Live menu updates without refresh  
-✔ Grid-based menu layout  
-✔ No Postman needed — UI is fully functional
+✔ Fully working UI — no Postman required  
+✔ Responsive grid-based product layout
+
+---
+
+## 🔐 Phase 2 — Authentication & Scalability (Completed)
+
+✔ JWT-based Admin Login  
+✔ Password hashing with bcrypt  
+✔ Protected routes (client + server)  
+✔ Token validation & logout support  
+✔ Codebase refactor & folder restructuring  
+✔ New `pages/` + `assets/` added to client  
+✔ Repo migrated & renamed to **BakeBuddy.API**  
+✔ UI placeholders added for:
+
+- Orders
+- Users
+- Analytics
+- Settings
 
 ---
 
 ## 🎨 Admin UI Design
-
 
 Inspired by **Panera Bread / Starbucks / Fazoli’s** dashboard style:
 
@@ -92,6 +153,24 @@ Below is the current **BakeBuddy Admin Dashboard**, featuring:
 ### 📸 Admin UI Preview
 
 <img src="./client/public/bakebuddy-admin-ui.png" width="700" />
+
+## 🔐 Authentication Screens
+
+### 👨‍💼 Admin Login Screen
+
+<img src="./client/public/Admin Login Page.png" width="500" />
+
+### 👨‍💼 Admin Login Successful Screen
+
+<img src="./client/public/Admin Login Successful Page.png" width="500" />
+
+### 👤 Customer Login Screen
+
+<img src="./client/public/User Login Page.png" width="500" />
+
+### 📝 Customer Registration Screen
+
+<img src="./client/public/User Registration Page.png" width="500" />
 
 ---
 
@@ -161,15 +240,26 @@ npm start
 
 ## 🔭 Roadmap (Next Steps)
 
-- 🔐 Admin Login (JWT Auth)
-- 👥 User Login + Orders
-- 🛒 Shopping Cart
-- 🧾 Order History
-- 🧁 Product Images
-- 📱 Customer-Facing Menu UI
-- 📊 Analytics Dashboard
+- 👥 Customer Login & Registration
+- 🛒 Order Placement & Cart System
+- 🧾 Order History & Tracking
+- 📊 Analytics Dashboard (Sales, Trends, Insights)
+- 🖼 Product Images & Categories
+- 📱 Public Customer Menu UI (Mobile friendly)
 - 🌓 Dark Mode Toggle
-- 🚀 Deploy to Render / Netlify
+- 🌍 Deployment (Render + Netlify + MongoDB Atlas)
+
+---
+
+## 🚧 Phase 3 — In Progress
+
+We are now building real-world SaaS functionality:
+
+- Customer-facing authentication
+- Cart & order management
+- Real-time admin analytics
+- Product images with cloud storage
+- Multi-role architecture (Admin vs Customer)
 
 ---
 
