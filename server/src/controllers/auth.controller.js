@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+import { sendWelcomeEmail } from "../utils/email.js";
 
 // Generate Token
 const generateToken = (user) => {
@@ -34,6 +35,11 @@ export const register = async (req, res) => {
     });
 
     await user.save();
+
+    // Fire-and-forget welcome email (do not block response if it fails)
+    sendWelcomeEmail(user.email, user.username).catch((err) => {
+      console.error("Failed to send welcome email:", err.message);
+    });
 
     res.status(201).json({
       message: "User registered successfully",

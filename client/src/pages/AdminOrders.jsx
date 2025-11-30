@@ -4,6 +4,11 @@ import api from "../api";
 
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
+  const totalOrders = orders.length;
+  const pendingOrders = orders.filter((o) => o.status === "pending").length;
+  const preparingOrders = orders.filter((o) => o.status === "preparing").length;
+  const readyOrders = orders.filter((o) => o.status === "ready").length;
+  const completedOrders = orders.filter((o) => o.status === "completed").length;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
@@ -115,6 +120,30 @@ function AdminOrders() {
           </button>
         </div>
 
+        {/* Summary row cards */}
+        <div style={styles.summaryRow}>
+          <div style={styles.summaryCard}>
+            <div style={styles.summaryLabel}>Total Orders</div>
+            <div style={styles.summaryValue}>{totalOrders}</div>
+          </div>
+          <div style={styles.summaryCard}>
+            <div style={styles.summaryLabel}>Pending</div>
+            <div style={styles.summaryValue}>{pendingOrders}</div>
+          </div>
+          <div style={styles.summaryCard}>
+            <div style={styles.summaryLabel}>Preparing</div>
+            <div style={styles.summaryValue}>{preparingOrders}</div>
+          </div>
+          <div style={styles.summaryCard}>
+            <div style={styles.summaryLabel}>Ready</div>
+            <div style={styles.summaryValue}>{readyOrders}</div>
+          </div>
+          <div style={styles.summaryCard}>
+            <div style={styles.summaryLabel}>Completed</div>
+            <div style={styles.summaryValue}>{completedOrders}</div>
+          </div>
+        </div>
+
         {loading && <p>Loading orders...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -222,5 +251,31 @@ function AdminOrders() {
     </div>
   );
 }
+
+const styles = {
+  summaryRow: {
+    display: "flex",
+    gap: "12px",
+    marginBottom: "16px",
+    flexWrap: "wrap",
+  },
+  summaryCard: {
+    flex: "1 1 120px",
+    minWidth: "140px",
+    padding: "10px 12px",
+    borderRadius: "10px",
+    background: "#fffbf7",
+    border: "1px solid #f0e2d8",
+  },
+  summaryLabel: {
+    fontSize: "12px",
+    color: "#777",
+    marginBottom: "4px",
+  },
+  summaryValue: {
+    fontSize: "18px",
+    fontWeight: 600,
+  },
+};
 
 export default AdminOrders;

@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import api from "./api";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -7,6 +13,9 @@ import AdminLogin from "./pages/AdminLogin";
 import CustomerHome from "./pages/CustomerHome";
 import Cart from "./pages/Cart";
 import AdminOrders from "./pages/AdminOrders";
+import AdminUsers from "./pages/AdminUsers";
+import AdminAnalytics from "./pages/AdminAnalytics";
+import MyOrders from "./pages/MyOrders";
 
 // ---------- Admin Dashboard UI ----------
 function AdminApp() {
@@ -113,19 +122,19 @@ function AdminApp() {
             <button style={menuButtonStyle}>Products</button>
             <button
               style={menuButtonStyle}
-              onClick={() => navigate('/admin/orders')}
+              onClick={() => navigate("/admin/orders")}
             >
               Orders
             </button>
             <button
               style={menuButtonStyle}
-              onClick={() => alert("🚧 Users Coming Soon")}
+              onClick={() => navigate("/admin/users")}
             >
               Users
             </button>
             <button
               style={menuButtonStyle}
-              onClick={() => alert("🚧 Analytics Coming Soon")}
+              onClick={() => navigate("/admin/analytics")}
             >
               Analytics
             </button>
@@ -306,6 +315,7 @@ export default function App() {
         {/* Customer Home */}
         <Route path="/home" element={<CustomerHome />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/my-orders" element={<MyOrders />} />
 
         {/* Admin Dashboard */}
         <Route
@@ -323,6 +333,26 @@ export default function App() {
           element={
             <RequireAdmin>
               <AdminOrders />
+            </RequireAdmin>
+          }
+        />
+
+        {/* Admin Users Page */}
+        <Route
+          path="/admin/users"
+          element={
+            <RequireAdmin>
+              <AdminUsers />
+            </RequireAdmin>
+          }
+        />
+
+        {/* Admin Analytics Page */}
+        <Route
+          path="/admin/analytics"
+          element={
+            <RequireAdmin>
+              <AdminAnalytics />
             </RequireAdmin>
           }
         />

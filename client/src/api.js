@@ -18,3 +18,15 @@ api.interceptors.request.use(
 );
 
 export default api;
+
+// Admin: Fetch analytics (total completed orders & revenue)
+export const fetchAdminAnalytics = () => api.get("/orders/analytics");
+
+// ---------- Admin Users APIs ----------
+
+export const fetchUsers = () => api.get("/users");
+
+export const deleteUserById = (id) => api.delete(`/users/${id}`);
+
+export const updateUserRoleById = (id, role) =>
+  api.put(`/users/${id}/role`, { role });

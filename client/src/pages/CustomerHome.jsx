@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
@@ -84,6 +82,38 @@ function CustomerHome() {
             }}
           >
             View Cart
+          </button>
+          <button
+            onClick={() => navigate("/my-orders")}
+            style={{
+              padding: "8px 14px",
+              borderRadius: "20px",
+              border: "none",
+              background: "#8e44ad",
+              cursor: "pointer",
+              fontWeight: 600,
+              color: "white",
+            }}
+          >
+            My Orders
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("cart");
+              navigate("/login");
+            }}
+            style={{
+              padding: "8px 14px",
+              borderRadius: "20px",
+              border: "none",
+              background: "#e74c3c",
+              cursor: "pointer",
+              fontWeight: 600,
+              color: "white",
+            }}
+          >
+            Logout
           </button>
         </div>
       </header>
