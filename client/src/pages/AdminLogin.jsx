@@ -63,6 +63,34 @@ function AdminLogin() {
             Not for customer use.
           </p>
         </form>
+        <a
+          href="/login"
+          className="customer-access"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            padding: "10px 16px",
+            background: "rgba(0, 0, 0, 0.5)",
+            backdropFilter: "blur(6px)",
+            borderRadius: "8px",
+            color: "white",
+            fontSize: "13px",
+            fontWeight: "600",
+            textDecoration: "none",
+            border: "1px solid rgba(255,255,255,0.3)",
+            cursor: "pointer",
+            transition: "0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = "rgba(0,0,0,0.7)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = "rgba(0,0,0,0.5)";
+          }}
+        >
+          Be a Customer
+        </a>
       </div>
     </div>
   );

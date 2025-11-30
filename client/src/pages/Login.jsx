@@ -11,17 +11,17 @@ function Login() {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
+
+      // Save token + role
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
-      alert("Login Successful!");
 
-      // redirect based on role
+      // Redirect based on role
       if (res.data.role === "admin") {
-        window.location.href = "/admin-dashboard";
+        window.location.href = "/admin";
       } else {
-        window.location.href = "/";
+        window.location.href = "/home";
       }
-
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
@@ -35,30 +35,32 @@ function Login() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        position: "relative",
       }}
     >
-
       <div className="auth-left">
         <h1 className="brand">🍰 BakeBuddy</h1>
-        <p>Fresh. Sweet. Delivered.</p>
+        <p>Login to explore sweet treats.</p>
       </div>
 
       <div className="auth-right">
         <form className="auth-form" onSubmit={handleLogin}>
-          <h2>Login</h2>
+          <h2>Welcome Back</h2>
 
-          <input type="email"
-            placeholder="Email"
+          <input
+            type="email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required />
+            required
+          />
 
-          <input type="password"
+          <input
+            type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required />
+            required
+          />
 
           <button type="submit">Login</button>
 
@@ -66,32 +68,36 @@ function Login() {
             New here? <a href="/register">Create an account</a>
           </p>
         </form>
-      </div>
 
-      <a
-        href="/admin-login"
-        className="admin-access"
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          right: "20px",
-          padding: "10px 16px",
-          background: "rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(6px)",
-          borderRadius: "8px",
-          color: "white",
-          fontSize: "13px",
-          fontWeight: "600",
-          textDecoration: "none",
-          border: "1px solid rgba(255,255,255,0.3)",
-          cursor: "pointer",
-          transition: "0.2s"
-        }}
-        onMouseEnter={(e) => { e.target.style.background = "rgba(0,0,0,0.7)" }}
-        onMouseLeave={(e) => { e.target.style.background = "rgba(0,0,0,0.5)" }}
-      >
-        Admin Access
-      </a>
+        <a
+          href="/admin-login"
+          className="admin-access"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            padding: "10px 16px",
+            background: "rgba(0, 0, 0, 0.5)",
+            backdropFilter: "blur(6px)",
+            borderRadius: "8px",
+            color: "white",
+            fontSize: "13px",
+            fontWeight: "600",
+            textDecoration: "none",
+            border: "1px solid rgba(255,255,255,0.3)",
+            cursor: "pointer",
+            transition: "0.2s",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = "rgba(0,0,0,0.7)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = "rgba(0,0,0,0.5)";
+          }}
+        >
+          Admin Access
+        </a>
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ Designed with real-world scalability, clean architecture & professional UI styli
 ## 🏗️ Project Architecture (MVC + Full Stack)
 
 ```
-Node - JS Project/
+Bakebuddy-SYSTEM/
 │
 ├── client/                          # React Frontend (Admin UI + Auth)
 │   ├── public/                      # Static assets & UI previews
@@ -31,6 +31,9 @@ Node - JS Project/
 │   ├── src/
 │   │   ├── pages/                   # Page-based routing
 │   │   │   ├── AdminLogin.jsx
+│   │   │   ├── AdminOrders.jsx
+│   │   │   ├── Cart.jsx
+│   │   │   ├── CustomerHome.jsx
 │   │   │   ├── Login.jsx
 │   │   │   └── Register.jsx
 │   │   ├── assets/
@@ -84,33 +87,94 @@ Node - JS Project/
 
 ## ✨ Phase 1 — Core Functionality (Completed)
 
-✔ Full CRUD (Create, Read, Update, Delete)  
-✔ Modern React Admin Dashboard  
-✔ Express REST API (MVC Structure)  
-✔ MongoDB + Mongoose Models  
-✔ CORS support  
-✔ Environment variables with `.env`  
-✔ Live menu updates without refresh  
-✔ Fully working UI — no Postman required  
-✔ Responsive grid-based product layout
+Core foundation of BakeBuddy:
+
+- Full CRUD (Create, Read, Update, Delete)
+- Modern React Admin Dashboard
+- Express REST API (MVC Architecture)
+- MongoDB + Mongoose Models
+- Responsive Product Grid
+- Live menu updates without refresh
+- Clean UI with reusable components
+- Environment-based configuration
+- Initial project scaffolding completed
 
 ---
 
-## 🔐 Phase 2 — Authentication & Scalability (Completed)
+## 🔐 Phase 2 — Authentication & Multi‑Role Access (Completed)
 
-✔ JWT-based Admin Login  
-✔ Password hashing with bcrypt  
-✔ Protected routes (client + server)  
-✔ Token validation & logout support  
-✔ Codebase refactor & folder restructuring  
-✔ New `pages/` + `assets/` added to client  
-✔ Repo migrated & renamed to **BakeBuddy.API**  
-✔ UI placeholders added for:
+Robust security + structured authentication:
 
-- Orders
-- Users
-- Analytics
-- Settings
+- JWT-based Auth System (Admin + Customer)
+- bcrypt password hashing
+- Protected routes on server & client
+- Token validation + Auto‑Logout
+- New project structure: `pages/`, `assets/`, `middleware/`, `scripts/`
+- Admin Access Control (role-based)
+- Customer Login & Registration UI (Fully styled)
+- Admin Login UI with restricted-access entry point
+
+---
+
+## 🛒 Phase 3 — Ordering System (Completed)
+
+Real-world ecommerce functionality:
+
+### ✔ Customer Features
+
+- Add to Cart
+- Increase / Decrease item quantity
+- Remove items
+- Place Order
+- Redirect flow: Login → Home → Cart → Place Order
+- Order saved in database with user reference
+
+### ✔ Admin Features
+
+- Admin Orders Dashboard
+- View all orders with:
+  - Customer details
+  - Items summary
+  - Total items
+  - Order status
+  - Timestamps
+- Update order status (pending → preparing → ready → completed → cancelled)
+- Back-to-dashboard navigation
+- Instant UI updates after status change
+- Full backend API for order creation, retrieval, and updates
+
+### ✔ Backend
+
+- New Order Model
+- Controllers for:
+  - createOrder
+  - getAllOrders
+  - getMyOrders
+  - updateOrderStatus
+- Admin-only endpoints
+- Clean status validation system
+
+---
+
+## 🚀 Phase 4 — Customer Order Tracking (Upcoming)
+
+Next planned implementation:
+
+### 🎯 Customer “My Orders” Page
+
+Customers will be able to:
+
+- View order history
+- See real-time-ish order status (polling or refresh-based)
+- Track order progress through statuses
+- Improved user flow after placing an order
+
+### 🧭 Planned Technical Additions
+
+- `/api/orders/my` integrated into frontend
+- Status badges for customer orders
+- Auto-refresh logic (5–10s intervals)
+- Optional: push-based updates (WebSockets/SSE)
 
 ---
 
@@ -152,7 +216,7 @@ Below is the current **BakeBuddy Admin Dashboard**, featuring:
 
 ### 📸 Admin UI Preview
 
-<img src="./client/public/bakebuddy-admin-ui.png" width="700" />
+<img src="./client/public/Admin Home Page.png" width="700" />
 
 ## 🔐 Authentication Screens
 
@@ -171,6 +235,36 @@ Below is the current **BakeBuddy Admin Dashboard**, featuring:
 ### 📝 Customer Registration Screen
 
 <img src="./client/public/User Registration Page.png" width="500" />
+
+---
+
+## 🛒 Customer & Order Flow Screens
+
+### 🍰 Customer Home (Menu Page)
+
+<img src="./client/public/Customer Home Page.png" width="500" />
+
+### 🍰 Customer Add To Cart
+
+<img src="./client/public/Customer Add to Cart Alert.png" width="500" />
+
+### 🛍️ Cart Page
+
+<img src="./client/public/Cart Pge Customer side .png" width="500" />
+
+### 🎉 Order Placed Confirmation
+
+<img src="./client/public/Customer Order Placing.png" width="500" />
+
+---
+
+## 📦 Admin Orders Dashboard
+
+<img src="./client/public/Admin - Customer Orders Page.png" width="500" />
+
+### 🔄 Status Update Example
+
+<img src="./client/public/Admin Orders Status Page .png" width="500" />
 
 ---
 
@@ -262,8 +356,6 @@ We are now building real-world SaaS functionality:
 - Multi-role architecture (Admin vs Customer)
 
 ---
-
-## 🛠 Tech Stack
 
 **Frontend:** React, Axios, JSX, CSS  
 **Backend:** Node.js, Express.js, MVC Pattern  

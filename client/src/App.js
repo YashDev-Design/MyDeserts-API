@@ -1,11 +1,16 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import api from "./api";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminLogin from "./pages/AdminLogin";
+import CustomerHome from "./pages/CustomerHome";
+import Cart from "./pages/Cart";
+import AdminOrders from "./pages/AdminOrders";
 
+// ---------- Admin Dashboard UI ----------
 function AdminApp() {
+  const navigate = useNavigate();
   const [products, setProducts] = React.useState([]);
   const [form, setForm] = React.useState({ name: "", type: "", calories: "" });
   const [editId, setEditId] = React.useState(null);
@@ -37,8 +42,18 @@ function AdminApp() {
   };
 
   const handleEdit = (p) => {
-    setForm(p);
+    setForm({
+      name: p.name,
+      type: p.type,
+      calories: p.calories,
+    });
     setEditId(p._id);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.location.href = "/admin-login";
   };
 
   const menuButtonStyle = {
@@ -74,43 +89,53 @@ function AdminApp() {
           alignItems: "center",
         }}
       >
-        <div style={{
-          width: "100%",
-          padding: "0 40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
-        }}>
-        <h2 style={{ margin: 0 }}>🍰 BakeBuddy Admin</h2>
+        <div
+          style={{
+            width: "100%",
+            padding: "0 40px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <h2 style={{ margin: 0 }}>🍰 BakeBuddy Admin</h2>
 
-        <div style={{
-          display: "flex",
-          gap: "12px",
-          flexWrap: "nowrap",
-          maxWidth: "100%",
-          justifyContent: "flex-end",
-          overflow: "visible",
-        }}>
-          <button style={menuButtonStyle}>Products</button>
-          <button
-            style={menuButtonStyle}
-            onClick={() => alert("🚧 Orders Coming Soon")}
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              flexWrap: "nowrap",
+              maxWidth: "100%",
+              justifyContent: "flex-end",
+              overflow: "visible",
+            }}
           >
-            Orders
-          </button>
-          <button
-            style={menuButtonStyle}
-            onClick={() => alert("🚧 Users Coming Soon")}
-          >
-            Users
-          </button>
-          <button
-            style={menuButtonStyle}
-            onClick={() => alert("🚧 Analytics Coming Soon")}
-          >
-            Analytics
-          </button>
-        </div>
+            <button style={menuButtonStyle}>Products</button>
+            <button
+              style={menuButtonStyle}
+              onClick={() => navigate('/admin/orders')}
+            >
+              Orders
+            </button>
+            <button
+              style={menuButtonStyle}
+              onClick={() => alert("🚧 Users Coming Soon")}
+            >
+              Users
+            </button>
+            <button
+              style={menuButtonStyle}
+              onClick={() => alert("🚧 Analytics Coming Soon")}
+            >
+              Analytics
+            </button>
+            <button
+              style={{ ...menuButtonStyle, background: "#ffe0e0" }}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
@@ -164,38 +189,37 @@ function AdminApp() {
 
         <h3 style={{ marginTop: "40px" }}>📋 Menu Items</h3>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "16px",
-        }}>
-        {products.map((p) => (
-          <div key={p._id} style={productCardStyle}>
-            <div>
-              <strong style={{ fontSize: "18px" }}>{p.name}</strong>
-              <br />
-              <small style={{ color: "#666" }}>
-                {p.type} • {p.calories} cal
-              </small>
-            </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {products.map((p) => (
+            <div key={p._id} style={productCardStyle}>
+              <div>
+                <strong style={{ fontSize: "18px" }}>{p.name}</strong>
+                <br />
+                <small style={{ color: "#666" }}>
+                  {p.type} • {p.calories} cal
+                </small>
+              </div>
 
-            <div>
-              <button
-                onClick={() => handleEdit(p)}
-                style={editButtonStyle}
-              >
-                ✏ Edit
-              </button>
+              <div>
+                <button onClick={() => handleEdit(p)} style={editButtonStyle}>
+                  ✏ Edit
+                </button>
 
-              <button
-                onClick={() => handleDelete(p._id)}
-                style={deleteButtonStyle}
-              >
-                🗑 Delete
-              </button>
+                <button
+                  onClick={() => handleDelete(p._id)}
+                  style={deleteButtonStyle}
+                >
+                  🗑 Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         </div>
       </main>
     </div>
@@ -255,15 +279,53 @@ const deleteButtonStyle = {
   fontWeight: "600",
 };
 
+// ---------- FRONTEND GUARD ----------
+const RequireAdmin = ({ children }) => {
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+
+  if (role !== "admin" || !token) {
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  return children;
+};
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />}/>
+        {/* Default: send to login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Auth pages */}
         <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<AdminApp />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin-login" element={<AdminLogin />} />
+
+        {/* Customer Home */}
+        <Route path="/home" element={<CustomerHome />} />
+        <Route path="/cart" element={<Cart />} />
+
+        {/* Admin Dashboard */}
+        <Route
+          path="/admin"
+          element={
+            <RequireAdmin>
+              <AdminApp />
+            </RequireAdmin>
+          }
+        />
+
+        {/* Admin Orders Page */}
+        <Route
+          path="/admin/orders"
+          element={
+            <RequireAdmin>
+              <AdminOrders />
+            </RequireAdmin>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
